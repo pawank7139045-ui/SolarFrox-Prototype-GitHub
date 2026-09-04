@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SolarFrox — Smart Cold Storage</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">
+          <span class="sun">☀</span>
+          <span class="leaf">◢</span>
+        </div>
+
+        <div>
+          <h1>SOLAR<span>FROX</span></h1>
+          <p>Smart Storage. Fresh Future.</p>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-item active" data-page="dashboard">
+          <span>⌂</span> Dashboard
+        </button>
+
+        <button class="nav-item" data-page="history">
+          <span>▥</span> History
+        </button>
+
+        <button class="nav-item" data-page="alerts">
+          <span>♟</span> Alerts
+          <b id="alertCount">2</b>
+        </button>
+
+        <button class="nav-item" data-page="settings">
+          <span>⚙</span> Settings
+        </button>
+      </nav>
+
+      <div class="side-card">
+        <div class="mini-sun">☀</div>
+        <strong>Solar Powered</strong>
+        <p>Clean energy powering smarter storage.</p>
+      </div>
+
+      <button class="logout" id="logoutBtn">
+        ↪ Log out
+      </button>
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- HEADER -->
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">SMART COLD STORAGE</p>
+          <h2 id="pageTitle">Good afternoon, Farmer 👋</h2>
+          <p class="sub">
+            Monitor your storage conditions in real time.
+          </p>
+        </div>
+
+        <div class="header-actions">
+          <button class="icon-btn" id="themeBtn">
+            ☾
+          </button>
+
+          <button class="icon-btn notification"
+                  data-page-jump="alerts">
+            ♟
+            <i></i>
+          </button>
+
+          <div class="avatar">SF</div>
+        </div>
+      </header>
+
+
+      <!-- DASHBOARD PAGE -->
+      <section id="dashboard" class="page active">
+
+        <div class="status-strip">
+          <div>
+            <span class="status-dot"></span>
+            <strong>Storage Unit 1</strong>
+            <small>Last updated just now</small>
+          </div>
+
+          <div class="online-pill">
+            ● System Online
+          </div>
+        </div>
+
+
+        <!-- METRICS -->
+        <div class="metrics-grid">
+
+          <article class="metric temperature">
+            <div class="metric-top">
+              <span class="metric-icon">♨</span>
+              <span class="metric-tag">LIVE</span>
+            </div>
+
+            <p>Temperature</p>
+            <h3>
+              <span id="tempValue">4.2</span>°C
+            </h3>
+
+            <small>Ideal range: 2 – 8 °C</small>
+
+            <div class="meter">
+              <span style="width:52%"></span>
+            </div>
+          </article>
+
+
+          <article class="metric humidity">
+            <div class="metric-top">
+              <span class="metric-icon">◒</span>
+              <span class="metric-tag">LIVE</span>
+            </div>
+
+            <p>Humidity</p>
+
+            <h3>
+              <span id="humidityValue">82</span>%
+            </h3>
+
+            <small>Ideal range: 70 – 90 %</small>
+
+            <div class="meter">
+              <span style="width:70%"></span>
+            </div>
+          </article>
+
+
+          <article class="metric battery">
+            <div class="metric-top">
+              <span class="metric-icon">▣</span>
+              <span class="metric-tag">CHARGING</span>
+            </div>
+
+            <p>Battery</p>
+
+            <h3>
+              <span id="batteryValue">76</span>%
+            </h3>
+
+            <small>Solar charging active</small>
+
+            <div class="meter">
+              <span style="width:76%"></span>
+            </div>
+          </article>
+
+
+          <article class="metric solar">
+            <div class="metric-top">
+              <span class="metric-icon">☀</span>
+              <span class="metric-tag">GOOD</span>
+            </div>
+
+            <p>Solar Power</p>
+
+            <h3>
+              <span id="solarValue">320</span> W
+            </h3>
+
+            <small>Current solar generation</small>
+
+            <div class="meter">
+              <span style="width:64%"></span>
+            </div>
+          </article>
+
+        </div>
+
+
+        <!-- DASHBOARD CONTENT -->
+        <div class="content-grid">
+
+          <!-- CHART -->
+          <section class="panel chart-panel">
+
+            <div class="panel-head">
+              <div>
+                <h3>Storage Overview</h3>
+                <p>Today's sensor readings</p>
+              </div>
+
+              <select id="rangeSelect">
+                <option>Last 24 hours</option>
+                <option>Last 7 days</option>
+                <option>Last 30 days</option>
+              </select>
+            </div>
+
+            <div class="legend">
+              <span>
+                <i class="dot temp-dot"></i>
+                Temperature
+              </span>
+
+              <span>
+                <i class="dot hum-dot"></i>
+                Humidity
+              </span>
+
+              <span>
+                <i class="dot bat-dot"></i>
+                Battery
+              </span>
+            </div>
+
+            <div class="chart-wrap">
+              <svg id="mainChart"
+                   viewBox="0 0 760 260"
+                   preserveAspectRatio="none">
+              </svg>
+            </div>
+
+          </section>
+
+
+          <!-- COOLING SYSTEM -->
+          <section class="panel system-panel">
+
+            <div class="panel-head">
+              <div>
+                <h3>Cooling System</h3>
+                <p>Automatic climate control</p>
+              </div>
+            </div>
+
+            <div class="cooling-visual">
+
+              <div class="fan-ring" id="fanRing">
+                <span>❄</span>
+              </div>
+
+              <div>
+                <span class="state"
+                      id="coolState">
+                  SYSTEM ON
+                </span>
+
+                <h3>Cooling is active</h3>
+
+                <p>
+                  Maintaining the selected
+                  temperature range.
+                </p>
+              </div>
+
+            </div>
+
+            <button class="power-btn"
+                    id="powerBtn">
+              <span>⏻</span>
+              Turn system OFF
+            </button>
+
+            <div class="quick-stats">
+
+              <div>
+                <span>Compressor</span>
+                <strong>62%</strong>
+              </div>
+
+              <div>
+                <span>Runtime</span>
+                <strong>08h 24m</strong>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <!-- BOTTOM SECTION -->
+        <div class="bottom-grid">
+
+          <!-- DEVICE HEALTH -->
+          <section class="panel health-panel">
+
+            <div class="panel-head">
+              <div>
+                <h3>Device Health</h3>
+                <p>Everything is operating normally</p>
+              </div>
+            </div>
+
+            <div class="health-row">
+              <span>Temperature sensor</span>
+              <b>Healthy</b>
+
+              <div class="progress">
+                <i style="width:96%"></i>
+              </div>
+
+              <strong>96%</strong>
+            </div>
+
+            <div class="health-row">
+              <span>Humidity sensor</span>
+              <b>Healthy</b>
+
+              <div class="progress">
+                <i style="width:93%"></i>
+              </div>
+
+              <strong>93%</strong>
+            </div>
+
+            <div class="health-row">
+              <span>Battery health</span>
+              <b>Good</b>
+
+              <div class="progress">
+                <i style="width:88%"></i>
+              </div>
+
+              <strong>88%</strong>
+            </div>
+
+          </section>
+
+
+          <!-- SOLAR TIP -->
+          <section class="panel tips-panel">
+
+            <span class="tip-icon">☀</span>
+
+            <div>
+              <h3>Solar energy is performing well</h3>
+
+              <p>
+                Current sunlight conditions are enough
+                to support active cooling and battery charging.
+              </p>
+            </div>
+
+          </section>
+
+        </div>
+
+      </section>
+
+
+      <!-- HISTORY PAGE -->
+      <section id="history" class="page">
+
+        <div class="section-title">
+
+          <div>
+            <h2>History & Analytics</h2>
+
+            <p>
+              Review sensor trends and storage performance.
+            </p>
+          </div>
+
+          <button class="primary-btn"
+                  id="exportBtn">
+            ⇩ Export CSV
+          </button>
+
+        </div>
+
+
+        <div class="tabs">
+          <button class="active">Day</button>
+          <button>Week</button>
+          <button>Month</button>
+        </div>
+
+
+        <section class="panel history-chart">
+
+          <div class="panel-head">
+
+            <div>
+              <h3>Temperature trend</h3>
+              <p>20 May 2026</p>
+            </div>
+
+          </div>
+
+          <div class="chart-wrap large">
+
+            <svg id="historyChart"
+                 viewBox="0 0 920 330"
+                 preserveAspectRatio="none">
+            </svg>
+
+          </div>
+
+        </section>
+
+
+        <div class="summary-cards">
+
+          <div>
+            <span>Average temperature</span>
+            <strong>4.5°C</strong>
+          </div>
+
+          <div>
+            <span>Average humidity</span>
+            <strong>81%</strong>
+          </div>
+
+          <div>
+            <span>Energy used</span>
+            <strong>3.8 kWh</strong>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ALERTS PAGE -->
+      <section id="alerts" class="page">
+
+        <div class="section-title">
+
+          <div>
+            <h2>Alerts</h2>
+            <p>
+              Important events from your cold storage.
+            </p>
+          </div>
+
+          <button class="secondary-btn"
+                  id="readAll">
+            Mark all as read
+          </button>
+
+        </div>
+
+
+        <div class="alerts-list">
+
+          <article class="alert-card danger">
+
+            <div class="alert-icon">!</div>
+
+            <div>
+              <h3>High temperature warning</h3>
+
+              <p>
+                Temperature crossed 8°C
+                for Storage Unit 1.
+              </p>
+
+              <small>Today, 10:28 AM</small>
+            </div>
+
+            <button>View</button>
+
+          </article>
+
+
+          <article class="alert-card warning">
+
+            <div class="alert-icon">▲</div>
+
+            <div>
+              <h3>Low battery alert</h3>
+
+              <p>
+                Battery dropped below the
+                preferred backup threshold.
+              </p>
+
+              <small>Yesterday, 08:15 PM</small>
+            </div>
+
+            <button>View</button>
+
+          </article>
+
+
+          <article class="alert-card info">
+
+            <div class="alert-icon">i</div>
+
+            <div>
+              <h3>Power restored</h3>
+
+              <p>
+                Solar generation returned
+                to normal levels.
+              </p>
+
+              <small>18 May 2026, 06:30 AM</small>
+            </div>
+
+            <button>View</button>
+
+          </article>
+
+
+          <article class="alert-card success">
+
+            <div class="alert-icon">✓</div>
+
+            <div>
+              <h3>Cooling system ON</h3>
+
+              <p>
+                Automatic climate control
+                was enabled successfully.
+              </p>
+
+              <small>18 May 2026, 06:29 AM</small>
+            </div>
+
+            <button>View</button>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- SETTINGS PAGE -->
+      <section id="settings" class="page">
+
+        <div class="section-title">
+
+          <div>
+            <h2>Settings</h2>
+
+            <p>
+              Configure your storage unit
+              and notification preferences.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="settings-grid">
+
+          <!-- STORAGE SETTINGS -->
+          <section class="panel form-panel">
+
+            <h3>Storage ranges</h3>
+
+            <label>
+              Storage Unit Name
+
+              <input value="Storage Unit 1">
+            </label>
+
+
+            <div class="form-row">
+
+              <label>
+                Min temperature
+
+                <input id="minTemp"
+                       type="number"
+                       value="2">
+              </label>
+
+
+              <label>
+                Max temperature
+
+                <input id="maxTemp"
+                       type="number"
+                       value="8">
+              </label>
+
+            </div>
+
+
+            <div class="form-row">
+
+              <label>
+                Min humidity
+
+                <input type="number"
+                       value="70">
+              </label>
+
+
+              <label>
+                Max humidity
+
+                <input type="number"
+                       value="90">
+              </label>
+
+            </div>
+
+
+            <button class="primary-btn"
+                    id="saveSettings">
+              Save changes
+            </button>
+
+          </section>
+
+
+          <!-- NOTIFICATIONS -->
+          <section class="panel form-panel">
+
+            <h3>Notification settings</h3>
+
+
+            <div class="toggle-row">
+
+              <span>High temperature alert</span>
+
+              <label class="switch">
+
+                <input type="checkbox"
+                       checked>
+
+                <i></i>
+
+              </label>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <span>Low battery alert</span>
+
+              <label class="switch">
+
+                <input type="checkbox"
+                       checked>
+
+                <i></i>
+
+              </label>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <span>Power failure alert</span>
+
+              <label class="switch">
+
+                <input type="checkbox"
+                       checked>
+
+                <i></i>
+
+              </label>
+
+            </div>
+
+
+            <hr>
+
+
+            <h3>About device</h3>
+
+            <p class="device-info">
+              Device ID
+              <strong>SC-001-NER</strong>
+            </p>
+
+            <p class="device-info">
+              Firmware
+              <strong>v1.0.3</strong>
+            </p>
+
+          </section>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- MOBILE NAVIGATION -->
+    <nav class="mobile-nav">
+
+      <button class="active"
+              data-page="dashboard">
+        ⌂
+        <span>Home</span>
+      </button>
+
+      <button data-page="history">
+        ▥
+        <span>History</span>
+      </button>
+
+      <button data-page="alerts">
+        ♟
+        <span>Alerts</span>
+      </button>
+
+      <button data-page="settings">
+        ⚙
+        <span>Settings</span>
+      </button>
+
+    </nav>
+
+
+    <!-- TOAST -->
+    <div class="toast"
+         id="toast">
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
